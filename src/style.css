@@ -1,0 +1,31 @@
+html {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: Cambria, serif;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #111;
+}
+
+#app h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+#canvas {
+  border: 1px solid #666;
+  border-radius: 2px;
+}
