@@ -152,7 +152,7 @@
       ctx.lineTo(point.x, point.y);
       return point;
     });
-    ctx.strokeStyle = '#666';
+    ctx.strokeStyle = '#00f';
     ctx.stroke();
 
     ctx.restore();
@@ -188,6 +188,13 @@
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
 
+  function adjustCanvasSize() {
+    canvas.width = Math.min(600, document.body.clientWidth * 0.8);
+    canvas.height = Math.min(600, document.body.clientHeight * 0.6);
+  }
+  window.addEventListener('resize', adjustCanvasSize);
+  adjustCanvasSize();
+
   const points = [
     { x: 0, y: 0 },
     { x: 50, y: 50 },
@@ -203,24 +210,51 @@
   let t = 0;
   let drawing = false;
 
-  canvas.addEventListener('mousedown', e => {
+  function handleMouseDown(x, y) {
     drawing = true;
     points.splice(0);
+    points.push({
+      x: x - canvas.width / 2,
+      y: y - canvas.height / 2,
+    });
     path.splice(0);
-  });
-  canvas.addEventListener('mousemove', e => {
+  }
+
+  function handleMouseMove(x, y) {
     if (drawing) {
       points.push({
-        x: e.offsetX - canvas.width / 2,
-        y: e.offsetY - canvas.height / 2,
+        x: x - canvas.width / 2,
+        y: y - canvas.height / 2,
       });
     }
-  });
-  canvas.addEventListener('mouseup', e => {
+  }
+
+  function handleMouseUp(x, y) {
     drawing = false;
     sinusoids = computeSinusoids(dft(pointsToComplexes(points)));
     t = 0;
-  });
+  }
+
+  canvas.addEventListener('mousedown', e =>
+    handleMouseDown(e.offsetX, e.offsetY)
+  );
+  canvas.addEventListener('touchstart', e =>
+    handleMouseDown(
+      e.targetTouches[0].clientX - canvas.offsetLeft,
+      e.targetTouches[0].clientY - canvas.offsetTop
+    )
+  );
+  canvas.addEventListener('mousemove', e =>
+    handleMouseMove(e.offsetX, e.offsetY)
+  );
+  canvas.addEventListener('touchmove', e =>
+    handleMouseMove(
+      e.targetTouches[0].clientX - canvas.offsetLeft,
+      e.targetTouches[0].clientY - canvas.offsetTop
+    )
+  );
+  canvas.addEventListener('mouseup', () => handleMouseUp());
+  canvas.addEventListener('touchend', () => handleMouseUp());
 
   function runAnimationLoop(loop) {
     let prevTick;
