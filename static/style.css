@@ -9,6 +9,12 @@ body {
   font-family: Cambria, serif;
 }
 
+html,
+body {
+  overflow: hidden;
+  position: relative;
+}
+
 #app {
   height: 100vh;
   display: flex;

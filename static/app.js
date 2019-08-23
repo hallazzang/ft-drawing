@@ -238,21 +238,23 @@
   canvas.addEventListener('mousedown', e =>
     handleMouseDown(e.offsetX, e.offsetY)
   );
-  canvas.addEventListener('touchstart', e =>
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
     handleMouseDown(
       e.targetTouches[0].clientX - canvas.offsetLeft,
       e.targetTouches[0].clientY - canvas.offsetTop
-    )
-  );
+    );
+  });
   canvas.addEventListener('mousemove', e =>
     handleMouseMove(e.offsetX, e.offsetY)
   );
-  canvas.addEventListener('touchmove', e =>
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
     handleMouseMove(
       e.targetTouches[0].clientX - canvas.offsetLeft,
       e.targetTouches[0].clientY - canvas.offsetTop
-    )
-  );
+    );
+  });
   canvas.addEventListener('mouseup', () => handleMouseUp());
   canvas.addEventListener('touchend', () => handleMouseUp());
 
